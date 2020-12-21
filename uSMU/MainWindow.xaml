@@ -1,0 +1,285 @@
+﻿<Window x:Class="uSMU.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+        xmlns:local="clr-namespace:uSMU"
+        mc:Ignorable="d"
+        Title="SMU Control - Joel Troughton 2020" Height="770" Width="800">
+
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width ="*" />
+            <ColumnDefinition Width ="1.5*" />
+
+        </Grid.ColumnDefinitions>
+
+        <Border Padding="10">
+            <ScrollViewer  VerticalScrollBarVisibility="Auto">
+                <StackPanel Grid.Column="0" Margin="0,0,5,0">
+
+                    <TextBlock Text="Select port" FontWeight="Bold" Margin="0,0,0,0" />
+                    <ComboBox Name="portsbox" Text="Select port" SelectionChanged="Portsbox_SelectionChanged" SelectedIndex="1" />
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*" />
+                            <ColumnDefinition Width ="*" />
+
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" Content="Connect" x:Name="connect" Click="Connect_Click" />
+                        <Button Grid.Column="1" Content="Disconnect" x:Name="disconnect" Click="Disconnect_Click" />
+
+
+                    </Grid>
+                    <TextBox Height="23" TextWrapping="Wrap" Text="Disconnected"  x:Name="status" />
+
+                    <TextBlock FontWeight="Bold" Margin="0,10,0,0" ><Run Text=" Voltage level control "/></TextBlock>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="2*" />
+                            <ColumnDefinition Width ="*" />
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Height="23" TextWrapping="Wrap" Text="Voltage set (V)" x:Name="levelbox" />
+                        <Button Grid.Column="1" Content="Start" x:Name="start" Click="Start_Click"/>
+                        <Button Grid.Column="2" Content="Stop" x:Name="stop" Click="Stop_Click" />
+
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*" />
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Height="23" TextWrapping="Wrap" Text="Voltage"  x:Name="voltage" />
+                        <TextBox Grid.Column="1" Height="23" TextWrapping="Wrap" Text="Current"  x:Name="current"/>
+
+                    </Grid>
+
+                    <TextBlock FontWeight="Bold" Margin="0,10,0,0" ><Run Text="Scan parameters"/></TextBlock>
+
+
+                    
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="*"/>
+                            <RowDefinition Height="*"/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Start (V)" Grid.Column="0" Grid.Row="0"/>
+                        <TextBlock Text="End (V)" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="Step (mV)" Grid.Column="2" Grid.Row="0"/>
+
+                        <TextBox Grid.Column="0" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="-1.0"  x:Name="startVoltage" />
+                        <TextBox Grid.Column="1" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="1"  x:Name="endVoltage" SpellCheck.IsEnabled="True"/>
+                        <TextBox Grid.Column="2" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="50"  x:Name="vStepSize"/>
+
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="*"/>
+                            <RowDefinition Height="*"/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Delay (ms)" Grid.Column="0" Grid.Row="0"/>
+                        <TextBlock Text="I limit (mA)" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="Over-sample no." Grid.Column="2" Grid.Row="0"/>
+
+                        <TextBox Grid.Column="0" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="0"  x:Name="delay" />
+                        <TextBox Grid.Column="1" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="5"  x:Name="Ilim" VerticalAlignment="Bottom"/>
+                        <TextBox Grid.Column="2" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="25"  x:Name="osr" VerticalAlignment="Bottom"/>
+
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="*"/>
+                            <RowDefinition Height="*"/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Active area (cm²)" Grid.Column="0" Grid.Row="0"/>
+
+                        <TextBox Grid.Column="0" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="1"  x:Name="cellArea" />
+
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+
+
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="Sweep" Grid.Column="0" x:Name="sweepBTN"  Click="SweepBTN_Click"/>
+                        <Button Content="Export CSV" Grid.Column="1" x:Name="export"  Click="Export_Click"/>
+                        <Button Content="Clear Graph" Grid.Column="2" x:Name="clearGraphs"  Click="ClearGraph_Click"/>
+
+                    </Grid>
+                    <TextBlock FontWeight="Bold" Margin="0,10,0,0" ><Run Text="Stability parameters           Hold condition"/></TextBlock>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+
+
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="*"/>
+                            <RowDefinition Height="*"/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Interval (min)" Grid.Column="0" Grid.Row="0"/>
+
+                        <TextBlock Text="" Grid.Column="2" Grid.Row="0"/>
+
+                        <TextBlock Text="MPP" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0"/>
+                        <TextBlock Text="OC" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="0"/>
+                        <TextBlock Text="SC" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="0"/>
+                        <TextBlock HorizontalAlignment="Center" Grid.Column="5" Grid.Row="0"><Run Text="Arb."/><Run Text=" (V)"/></TextBlock>
+
+
+                        <TextBox Grid.Column="0" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="10"  x:Name="intervalMins" />
+                        <TextBlock Text="Ch 1" HorizontalAlignment="Center" VerticalAlignment="Center"  Grid.Column="1" Grid.Row="1"/>
+
+                        <CheckBox  Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"  x:Name="ch1mppHold"/>
+                        <CheckBox  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" x:Name="ch1vocHold"/>
+                        <CheckBox  Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"  x:Name="ch1jscHold"/>
+                        <TextBox  Grid.Column="5"  Height="23" TextWrapping="Wrap" Grid.Row="1" Text="0"  VerticalAlignment="Center" IsEnabled="True" x:Name="ch1arbHold"/>
+
+
+                    </Grid>
+
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*"/>
+                            <ColumnDefinition Width="*"/>
+
+
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="Start" Grid.Column="0" x:Name="startStab"  Click="StabBtnStart_Click"/>
+                        <Button Content="Stop" Grid.Column="1" x:Name="stopStab"  Click="StabBtnStop_Click"/>
+
+                    </Grid>
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="5*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox  Height="23" Margin="0,10,0,0" Grid.Column="0" TextWrapping="Wrap" Text="C:\data"  VerticalAlignment="Center" IsEnabled="True" x:Name="saveDirectoryText"/>
+                        <Button Content="Select" Margin="0,10,0,0" Grid.Column="1" x:Name="saveDirectory"  Click="SaveDirectory_Click"/>
+                    </Grid>
+
+
+
+                    <TextBlock FontWeight="Bold" Margin="0,10,0,0" ><Run Text="Time until next measurement"/></TextBlock>
+                    <Label Name="lblTime" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+
+
+                    <TextBlock FontWeight="Bold" Margin="0,10,0,0" ><Run Text="Cell statistics"/></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width ="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="VOC" Grid.Column="0" Grid.Row="0"/>
+                        <TextBlock Text="JSC" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="FF" Grid.Column="2" Grid.Row="0"/>
+                        <TextBlock Text="PCE" Grid.Column="3" Grid.Row="0"/>
+                        <TextBlock Text="Vmpp" Grid.Column="4" Grid.Row="0"/>
+
+
+
+                        <TextBox Grid.Column="0" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="0"  x:Name="voc" IsEnabled="False" />
+                        <TextBox Grid.Column="1" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="0"  x:Name="jsc" IsEnabled="False"/>
+                        <TextBox Grid.Column="2" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="0"  x:Name="ff" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="0"  x:Name="pce" IsEnabled="False"/>
+                        <TextBox Grid.Column="4" Grid.Row="1" Height="23" TextWrapping="Wrap" Text="0"  x:Name="vmpp" IsEnabled="False"/>
+
+                    </Grid>
+
+
+
+
+                    <DataGrid x:Name="ivDatagrid" Height="75" Margin="0,10,0,0" IsReadOnly="True" CanUserReorderColumns="False" CanUserSortColumns="False">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Voltage (V)" Binding="{Binding voltage}" Width="*" />
+                            <DataGridTextColumn Header="Current density (mA/cm²)" Binding="{Binding current}" Width="*" />
+                            <DataGridTextColumn Header="Power (mW/cm²)" Binding="{Binding power}" Width="*"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                    <TextBlock TextWrapping="Wrap" Text="Joel Troughton - 2020" HorizontalAlignment="Left" VerticalAlignment="Bottom" ClipToBounds="True" Foreground="#FF575757" FontWeight="Bold"/>
+
+
+                </StackPanel>
+
+            </ScrollViewer>
+        </Border>
+
+
+        <Border Padding="10" Grid.Column="1">
+            <WpfPlot Name="jvPlot" Margin="10"/>
+        </Border>
+
+    </Grid>
+
+</Window>
